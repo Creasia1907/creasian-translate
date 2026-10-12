@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#741f35">
+<title>Creasian Translator | Royal Language Authority</title>
+<style>
+:root{--wine:#741f35;--wine2:#9d304b;--gold:#d8b56d;--cream:#f8f4eb;--ink:#28232a;--muted:#706872;--line:#e6dce0;--white:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#f4e9e9 0,#fbf8f2 300px,var(--cream) 100%);font-family:Georgia,"Times New Roman",serif;color:var(--ink);min-height:100vh}
+header{background:var(--wine);color:white;padding:30px 18px 26px;text-align:center;border-bottom:5px solid var(--gold)}
+.crest{width:54px;height:54px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;color:var(--gold);font-size:27px}
+.eyebrow{font:700 11px/1.4 Arial,sans-serif;letter-spacing:3px;text-transform:uppercase;color:#efdcae}
+h1{font-size:clamp(28px,5vw,43px);font-weight:normal;margin:8px 0}
+header p{font:14px Arial,sans-serif;color:#f1dfe4;margin:0}
+main{max-width:900px;margin:30px auto;padding:0 16px 40px}
+.intro{text-align:center;max-width:650px;margin:0 auto 24px}
+.intro h2{font-size:25px;font-weight:normal;margin:0 0 8px}
+.intro p{font:15px/1.6 Arial,sans-serif;color:var(--muted);margin:0}
+.translator{background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 35px #4b1c2b12;overflow:hidden}
+.langheads{display:grid;grid-template-columns:1fr 1fr;background:#fbf8f8;border-bottom:1px solid var(--line)}
+.langheads div{padding:14px 20px;font:700 12px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase}
+.langheads div+div{border-left:1px solid var(--line)}
+.panes{display:grid;grid-template-columns:1fr 1fr}
+.pane{padding:20px;min-width:0}
+.pane+.pane{border-left:1px solid var(--line)}
+textarea,.output{display:block;width:100%;min-height:190px;border:0;outline:0;resize:vertical;background:transparent;font:20px/1.6 Arial,sans-serif;color:var(--ink);overflow-wrap:anywhere}
+textarea::placeholder{color:#b2a9ad}
+.output{white-space:pre-wrap}
+.output:empty:before{content:"Your Creasian translation will appear here…";color:#b2a9ad}
+.actions{display:flex;gap:10px;flex-wrap:wrap;padding:0 20px 20px}
+button{font:700 14px Arial,sans-serif;border-radius:9px;padding:12px 17px;border:1px solid var(--wine);cursor:pointer;transition:transform .12s,background .12s}
+button:active{transform:scale(.98)}
+.primary{background:var(--wine);color:white}
+.primary:hover{background:var(--wine2)}
+.secondary{background:white;color:var(--wine)}
+.secondary:hover{background:#fbf0f3}
+.status{font:13px Arial,sans-serif;color:var(--muted);padding:0 20px 18px;min-height:18px}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.info{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px}
+.info h3{font-size:18px;font-weight:normal;margin:0 0 10px}
+.info p,.info li{font:13px/1.6 Arial,sans-serif;color:var(--muted)}
+.info ul{padding-left:18px;margin:8px 0 0}
+.mapping{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.letter{background:#fbf7f4;border:1px solid #eee2df;border-radius:7px;text-align:center;padding:7px 2px;font:12px Arial,sans-serif}
+.letter b{display:block;color:var(--wine);font-size:13px;margin-bottom:3px}
+footer{text-align:center;font:12px Arial,sans-serif;color:#857982;padding:0 16px 28px}
+@media(max-width:650px){main{margin-top:22px}.panes{grid-template-columns:1fr}.langheads{grid-template-columns:1fr 1fr}.pane{padding:16px}.pane+.pane{border-left:0;border-top:1px solid var(--line)}textarea,.output{min-height:130px;font-size:18px}.details{grid-template-columns:1fr}.mapping{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header>
+  <div class="crest" aria-hidden="true">✦</div>
+  <div class="eyebrow">The Kingdom of Creasia</div>
+  <h1>Creasian Translator</h1>
+  <p>Royal Language Authority · English to Creasian</p>
+</header>
+<main>
+  <section class="intro">
+    <h2>Translate into Creasian</h2>
+    <p>Type English below and your text will be converted using the Creasian letter code and word-start rule.</p>
+  </section>
+  <section class="translator" aria-label="Translator">
+    <div class="langheads"><div>English</div><div>Creasian</div></div>
+    <div class="panes">
+      <div class="pane"><textarea id="input" aria-label="English text" placeholder="Type English here…" spellcheck="false"></textarea></div>
+      <div class="pane"><div id="output" class="output" aria-live="polite" aria-label="Creasian translation"></div></div>
+    </div>
+    <div class="actions">
+      <button class="primary" id="translateBtn" type="button">Translate</button>
+      <button class="secondary" id="copyBtn" type="button">Copy translation</button>
+      <button class="secondary" id="clearBtn" type="button">Clear</button>
+      <button class="secondary" id="exampleBtn" type="button">Try “BAD”</button>
+    </div>
+    <div class="status" id="status" role="status"></div>
+  </section>
+  <section class="details">
+    <div class="info">
+      <h3>Creasian rules</h3>
+      <ul>
+        <li>English letters are replaced using your codebook.</li>
+        <li>Words starting with an English vowel get no extra A.</li>
+        <li>Words starting with a consonant get A after the first translated consonant.</li>
+        <li>If the translated word begins with HJA, TSA, QAI or XHA, A goes after the whole special letter.</li>
+      </ul>
+      <p>Example: BAD → DEB → DAEB.</p>
+    </div>
+    <div class="info"><h3>Official letter code</h3><div class="mapping" id="mapping"></div></div>
+  </section>
+</main>
+<footer>Creasian Translator · A fictional language project</footer>
+<script>
+const code = {
+  A:"E", B:"D", C:"G", D:"B", E:"A", F:"HJA", G:"H",
+  H:"M", I:"U", J:"F", K:"L", L:"K", M:"TSA", N:"N",
+  O:"O", P:"QAI", Q:"P", R:"S", S:"R", T:"V", U:"I",
+  V:"T", W:"J", X:"YE", Y:"XHA", Z:"Z"
+};
+const specialLetters = ["HJA", "TSA", "QAI", "XHA"];
+const input = document.getElementById("input");
+const output = document.getElementById("output");
+const status = document.getElementById("status");
+
+function translateWord(word) {
+  const match = word.match(/^([^A-Za-z]*)([A-Za-z]+)([^A-Za-z]*)$/);
+  if (!match) return word;
+  const [, prefix, englishWord, suffix] = match;
+  const converted = [...englishWord].map(char => {
+    const upper = char.toUpperCase();
+    const value = code[upper];
+    if (value === undefined) return char;
+    return char === upper ? value : value.toLowerCase();
+  }).join("");
+
+  if (/[AEIOU]/i.test(englishWord[0])) {
+    return prefix + converted + suffix;
+  }
+
+  const special = specialLetters.find(letter =>
+    converted.toUpperCase().startsWith(letter)
+  );
+  if (special) {
+    const firstPart = converted.slice(0, special.length);
+    const extraA = firstPart === firstPart.toUpperCase() ? "A" : "a";
+    return prefix + firstPart + extraA + converted.slice(special.length) + suffix;
+  }
+
+  const first = converted[0];
+  const extraA = first === first.toUpperCase() ? "A" : "a";
+  return prefix + first + extraA + converted.slice(1) + suffix;
+}
+function translate() {
+  output.textContent = input.value.split(/(\s+)/).map(translateWord).join("");
+  status.textContent = "";
+}
+input.addEventListener("input", translate);
+document.getElementById("translateBtn").addEventListener("click", translate);
+document.getElementById("clearBtn").addEventListener("click", () => {
+  input.value = "";
+  output.textContent = "";
+  status.textContent = "";
+  input.focus();
+});
+document.getElementById("exampleBtn").addEventListener("click", () => {
+  input.value = "BAD";
+  translate();
+});
+document.getElementById("copyBtn").addEventListener("click", async () => {
+  const value = output.textContent;
+  if (!value) { status.textContent = "Enter some English text first."; return; }
+  try {
+    await navigator.clipboard.writeText(value);
+    status.textContent = "Translation copied!";
+  } catch {
+    const range = document.createRange();
+    range.selectNodeContents(output);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    status.textContent = "Select the highlighted translation and copy it.";
+  }
+});
+const mapping = document.getElementById("mapping");
+for (const letter of "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
+  const item = document.createElement("div");
+  item.className = "letter";
+  const b = document.createElement("b");
+  b.textContent = letter;
+  const span = document.createElement("span");
+  span.textContent = code[letter];
+  item.append(b, span);
+  mapping.append(item);
+}
+</script>
+</body>
+</html>
